@@ -1,0 +1,60 @@
+@import "properties";
+
+$navHover: #252525;
+$backgroundColor: white;
+
+header {
+  height: 5rem;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  padding: 0 2rem;
+  width: -webkit-fill-available;
+  background-color: $backgroundColor;
+  @extend %shadowGlobal;
+  a {
+    text-decoration: none;
+    color: #000;
+    font-size: 2em;
+  }
+  nav {
+    position: relative;
+    display: grid;
+    grid-template-columns: 90px 1fr auto;
+    align-items: center;
+    height: 100%;
+    font-weight: 500;
+    font-size: 16px;
+
+    .nav-items {
+      ul {
+        @include flexBox(row);
+        list-style: none;
+        gap: 1em;
+        li {
+          @extend %smoothTransition;
+          cursor: pointer;
+          letter-spacing: 1px;
+          &:hover {
+            color: $navHover;
+            font-weight: 600;
+            font-size: 18px;
+          }
+        }
+      }
+    }
+    .icon-space {
+      @include flexBox();
+      gap: 1.5em;
+      span {
+        @extend %smoothTransition;
+        cursor: pointer;
+        &:hover {
+          color: $navHover;
+          font-weight: 600;
+          font-size: 20px;
+        }
+      }
+    }
+  }
+}
