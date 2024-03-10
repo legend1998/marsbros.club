@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en" color-scheme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <style>
+      [color-scheme="dark"] {
+        --background-color: #000000;
+        --text-color: #fdfdfd;
+      }
+      [color-scheme="light"] {
+        --background-color: #e6e6e6;
+        --text-color: #333333;
+      }
+      [color-scheme="gray"] {
+        --background-color: #323232;
+        --text-color: #c9c9c9;
+      }
+      [color-scheme="light"] {
+        --background-color: #e6e6e6;
+        --text-color: #333333;
+      }
+      body {
+        background-color: var(--background-color);
+        color: var(--text-color);
+        transition: background-color 0.5s ease, color 0.5s ease;
+      }
+      .item {
+        transition: ease-in-out 300ms;
+      }
+      .item:has(:checked) {
+        background: red;
+      }
+      p:first-of-type:first-letter {
+        initial-letter: var(--initial, 2 2);
+      }
+      p {
+        width: 50ch;
+      }
+      /* container queries with media queries */
+      .card {
+        display: grid;
+        gap: 1rem;
+
+        @container (width >= 480px) {
+          display: flex;
+        }
+      }
+
+      /* scoping svelte ka bap */
+      @scope (.card) {
+        .title {
+          font-weight: bold;
+        }
+      }
+
+      .lch {
+        background: linear-gradient(
+          in lch to right,
+          lch(29.6 131 301),
+          hsl(330 100% 50%)
+        );
+        height: 200px;
+        border-radius: 20px;
+      }
+      .gradient {
+        background: linear-gradient(
+          to right,
+          hsl(180deg 100% 75%),
+          hsl(240deg 100% 75%)
+        );
+        height: 200px;
+        border-radius: 20px;
+      }
+      .settings-popover {
+        &:popover-open {
+          /*   0. BEFORE-OPEN STATE   */
+          /*  initial state for what we're animating *in* from, 
+        in this case: goes from lower (y + 20px) to center  */
+          @starting-style {
+            transform: translateY(20px);
+            opacity: 0;
+          }
+
+          /*   1. OPEN STATE   */
+          /*  state when popover is open, BOTH:
+        what we're transitioning *in* to 
+        and transitioning *out* from */
+          transform: translateY(0);
+          opacity: 1;
+        }
+
+        /*   2. AFTER-OPEN-IS-CLOSED STATE   */
+        /*  initial state for what we're animating *out* to , 
+      in this case: goes from center to (y - 50px) higher */
+        transform: translateY(-50px);
+        opacity: 0;
+
+        /*  enumarate transitioning properties, including display */
+        transition: transform 0.5s, opacity 0.5s, display 0.5s;
+      }
+
+      /* etc. */
+
+      .settings-popover {
+        background: ghostwhite;
+        position: fixed;
+        margin: auto;
+        border: 1px solid skyblue;
+        padding: 2rem;
+        line-height: 2;
+        width: 350px;
+        box-shadow: 0 0 25px dimgray;
+      }
+
+      .settings-popover button {
+        background: none;
+        border: none;
+        filter: grayscale(1);
+      }
+
+      .settings-popover label {
+        width: 100%;
+        font-weight: 600;
+      }
+
+      .settings-popover input,
+      .settings-popover select {
+        font-size: 1rem;
+        padding: 0.25rem 0.5rem;
+      }
+
+      .settings-popover h2 {
+        font-size: 1.75rem;
+      }
+
+      .settings-form-section {
+        display: grid;
+        margin-top: 1rem;
+      }
+
+      .settings-popover::backdrop {
+        background: rgb(170 210 220 / 0.5);
+      }
+
+      @keyframes reveal {
+        from {
+          opacity: 0;
+          clip-path: inset(0% 60% 0% 50%);
+        }
+        to {
+          opacity: 1;
+          clip-path: inset(0% 0% 0% 0%);
+        }
+      }
+
+      .revealing-image {
+        animation: auto ease-in reveal both;
+        animation-timeline: view();
+        animation-range: entry 25% cover 50%;
+      }
+      @keyframes grow-progress {
+        from {
+          transform: scaleX(0);
+        }
+        to {
+          transform: scaleX(1);
+        }
+      }
+
+      #progress {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 1em;
+        background: red;
+
+        transform-origin: 0 50%;
+        animation: grow-progress auto linear;
+        animation-timeline: scroll();
+      }
+
+      @keyframes animate-in-and-out {
+        entry 0% {
+          opacity: 0;
+          transform: translateY(100%);
+        }
+        entry 100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        exit 0% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        exit 100% {
+          opacity: 0;
+          transform: translateY(-100%);
+        }
+      }
+
+      #list-view li {
+        animation: linear animate-in-and-out;
+        animation-timeline: view();
+      }
+    </style>
+  </head>
+  <body>
+    <div id="progress"></div>
+    <button>change theme</button>
+    <div class="item">
+      <input type="checkbox" />
+      <p class="">this must be working</p>
+    </div>
+    <div id="event-popup" style="transition: 500ms ease-in-out" popover>
+      this is popup right and should be working
+    </div>
+
+    <button popovertarget="event-popup">Create New Event</button>
+
+    <button popovertarget="my-popover" class="trigger-btn">Open Popover</button>
+
+    <div id="my-popover" popover="manual">
+      <button
+        class="close-btn"
+        popovertarget="my-popover"
+        popovertargetaction="hide"
+      >
+        <span aria-hidden="”true”">❌</span>
+        <span class="sr-only">Close</span>
+      </button>
+      <p>I am a popover with more information.</p>
+      <p></p>
+    </div>
+
+    <button popovertarget="theme-settings-popover">
+      <span aria-hidden="true">🎨</span>
+      <span class="sr-only">Appearance Settings</span>
+    </button>
+
+    <div id="theme-settings-popover" class="settings-popover" popover>
+      <button
+        class="close-btn"
+        popovertarget="theme-settings-popover"
+        popovertargetaction="hide"
+      >
+        <span>❌</span>
+        <span class="sr-only">Close</span>
+      </button>
+      <h2>Theme Settings</h2>
+      <form>
+        <div class="settings-form-section">
+          <fieldset class="two-by">
+            <div>
+              <input type="radio" id="dark" name="theme" value="dark" />
+              <label for="dark"><span>🌙</span> Dark</label>
+            </div>
+            <div>
+              <input
+                type="radio"
+                checked
+                id="light"
+                name="theme"
+                value="light"
+              />
+              <label for="light"><span>☀️</span> Light</label>
+            </div>
+          </fieldset>
+        </div>
+      </form>
+    </div>
+    <p>Hey suman how are you. are going okay</p>
+    <div class="lch">hello whatsup</div>
+    <div class="gradient">hello whatsup</div>
+    <section
+      class="revealing-image"
+      style="height: 100svh; background-color: rgb(20, 51, 78)"
+    ></section>
+    <script>
+      const themes = ["light", "dark", "gray"];
+      document.querySelector("button").addEventListener("click", () => {
+        document.body.setAttribute(
+          "color-scheme",
+          themes[Math.floor(Math.random() * themes.length)]
+        );
+      });
+    </script>
+  </body>
+</html>

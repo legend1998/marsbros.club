@@ -1,5 +1,13 @@
 function init() {
   new SmoothScroll(document, 150, 10);
+  document
+    .querySelector("#light-switch input")
+    .addEventListener("change", (e) => {
+      document.body.setAttribute(
+        "color-scheme",
+        e.target.checked ? "dark" : "light"
+      );
+    });
 }
 
 function SmoothScroll(target, speed, smooth) {
