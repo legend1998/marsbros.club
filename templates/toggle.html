@@ -279,6 +279,25 @@
       class="revealing-image"
       style="height: 100svh; background-color: rgb(20, 51, 78)"
     ></section>
+
+    <!-- testing section  -->
+    <section
+      id="testSection"
+      style="
+        height: 100vh;
+        width: 100vw;
+        background-color: red;
+        display: grid;
+        place-items: center;
+      "
+    >
+      <div
+        style="width: 200px; height: 300px; background-color: blue"
+        id="testDiv"
+      >
+        adsfasdf
+      </div>
+    </section>
     <script>
       const themes = ["light", "dark", "gray"];
       document.querySelector("button").addEventListener("click", () => {
@@ -286,6 +305,12 @@
           "color-scheme",
           themes[Math.floor(Math.random() * themes.length)]
         );
+      });
+
+      document.querySelector("#testSection").addEventListener("click", (e) => {
+        if (e.currentTarget === e.target) {
+          section.style.display = "none";
+        }
       });
     </script>
   </body>

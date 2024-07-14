@@ -1,0 +1,15 @@
+FROM node:latest
+
+LABEL maintainer="marsbros.club"
+
+HEALTHCHECK --interval=5s \
+            --timeout=5s \
+            CMD curl -f http://127.0.0.1:8080 || exit 1
+
+EXPOSE 8080
+
+RUN npm run build
+
+COPY ./build /
+
+CMD [ "npm","run","production" ]

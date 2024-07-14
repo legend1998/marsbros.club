@@ -7,7 +7,10 @@ app.use("/solid", express.static("public"));
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "templates", "landing.html"));
 });
+app.get("/testing", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "templates", "testing.html"));
+});
 
 app.listen(8080, () => {
-  console.log("listening on 8000");
+  console.log("listening on 8080");
 });

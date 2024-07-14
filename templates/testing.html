@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body></body>
+  <script>
+    // html DOM manipulation
+
+    // var append block - nhi chahiye, modification,clean code
+    // innerHtml - direct HTMl code  - already block exist- link,modification- not clean Code
+
+    // two ways to define a listener on element
+
+    // first
+
+    // form.addEventListener("click", (e) => {});
+
+    //second
+
+    // form.onclick = () => {};
+
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = "";
+
+    // submit
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const formData = [];
+      console.log(e);
+      for (const param of e.srcElement) {
+        formData.push({ name: param.name, value: param.value });
+      }
+      console.log(formData);
+    });
+
+    form.style.display = "none";
+    form.style.flexDirection = "column";
+    form.style.gap = "10px";
+    form.style.margin = "10px";
+    form.style.padding = "10px";
+    form.style.borderRadius = "10px";
+    form.style.border = "2px solid black";
+
+    const input1 = document.createElement("input");
+    input1.name = "firstName";
+    input1.value = "suman";
+    input1.placeholder = "Enter Your Name";
+    const input2 = document.createElement("input");
+    input2.name = "secondName";
+    input2.placeholder = "Last Name";
+    const input3 = document.createElement("input");
+    input3.name = "thirdName";
+    input3.placeholder = "Enter Middle Name";
+
+    const submitButton = document.createElement("button");
+    submitButton.innerText = "Submit";
+    submitButton.type = "submit";
+    const resetButton = document.createElement("button");
+    resetButton.type = "reset"; //Form-- reset, submit
+    resetButton.innerHTML = "<div><h1 style='color:red'>Reset</h1></div>";
+
+    form.append(input1);
+    form.append(input2);
+    form.append(input3);
+    form.append(submitButton);
+    form.append(resetButton);
+
+    const revealButton = document.createElement("button");
+    revealButton.innerText = "Reveal Form";
+    revealButton.style.fontSize = "30px";
+    revealButton.style.padding = "10px";
+    revealButton.style.transition = "500ms ease-in-out";
+    revealButton.style.borderRadius = "10px";
+    revealButton.style.color = "white";
+
+    revealButton.onclick = () => {
+      document.body.append(form);
+      form.style.display = form.style.display == "none" ? "flex" : "none";
+      revealButton.innerText =
+        form.style.display == "none" ? "Show Form" : "Hide Form";
+      revealButton.style.backgroundColor =
+        form.style.display == "none" ? "blue" : "red";
+    };
+    document.body.append(revealButton);
+  </script>
+</html>
